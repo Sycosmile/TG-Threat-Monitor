@@ -97,6 +97,19 @@ tg-threat-monitor/
 
 ---
 
+## CI
+
+This repository includes a GitHub Actions workflow that runs formatting and linters on push and pull requests. The workflow file is located at `.github/workflows/ci.yml`.
+
+## Contributing
+
+See `CONTRIBUTING.md` for contribution guidelines and local lint/format commands.
+
+## License
+
+This project is licensed under the MIT License — see the `LICENSE` file for details.
+
+
 ## Disclaimer
 
 This tool is intended for **authorized security research and threat intelligence purposes only**. Only monitor public channels. Do not use against private accounts or groups without authorization. The author assumes no liability for misuse.
