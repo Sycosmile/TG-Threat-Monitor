@@ -1,0 +1,22 @@
+# Session & credentials
+*.session
+*.session-journal
+config.py
+
+# Data & output
+data/
+output/
+
+# Python
+__pycache__/
+*.pyc
+*.pyo
+.env
+venv/
+*.egg-info/
+dist/
+build/
+
+# OS
+.DS_Store
+Thumbs.db
