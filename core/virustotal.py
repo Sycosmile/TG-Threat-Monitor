@@ -8,18 +8,17 @@ import requests
 
 VT_BASE = "https://www.virustotal.com/api/v3"
 
+
 def vt_headers(key: str) -> dict:
-    return {
-        "x-apikey": key,
-        "Accept": "application/json"
-    }
+    return {"x-apikey": key, "Accept": "application/json"}
+
 
 TYPE_ENDPOINTS = {
-    "ipv4":   "ip_addresses",
+    "ipv4": "ip_addresses",
     "domain": "domains",
-    "url":    "urls",
-    "md5":    "files",
-    "sha1":   "files",
+    "url": "urls",
+    "md5": "files",
+    "sha1": "files",
     "sha256": "files",
 }
 
@@ -41,9 +40,9 @@ def lookup(ioc: str, ioc_type: str, api_key: str) -> dict:
             data = resp.json().get("data", {}).get("attributes", {})
             stats = data.get("last_analysis_stats", {})
             return {
-                "malicious":  stats.get("malicious", 0),
+                "malicious": stats.get("malicious", 0),
                 "suspicious": stats.get("suspicious", 0),
-                "harmless":   stats.get("harmless", 0),
+                "harmless": stats.get("harmless", 0),
                 "undetected": stats.get("undetected", 0),
                 "reputation": data.get("reputation", None),
             }

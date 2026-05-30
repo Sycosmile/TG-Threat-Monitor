@@ -25,13 +25,15 @@ def generate(db_path: str, output_path: str):
         ioc_lines = ""
         for ioc_type, vals in iocs.items():
             ioc_lines += f'<span class="tag">{ioc_type.upper()}</span> '
-            ioc_lines += ", ".join(f'<code>{v}</code>' for v in vals[:4])
+            ioc_lines += ", ".join(f"<code>{v}</code>" for v in vals[:4])
             if len(vals) > 4:
                 ioc_lines += f" <em>+{len(vals)-4} more</em>"
             ioc_lines += "<br>"
 
         sev = r.get("severity", "LOW")
-        sev_class = {"HIGH": "sev-high", "MEDIUM": "sev-med", "LOW": "sev-low"}.get(sev, "sev-low")
+        sev_class = {"HIGH": "sev-high", "MEDIUM": "sev-med", "LOW": "sev-low"}.get(
+            sev, "sev-low"
+        )
         watchlist_badge = ""
         if watchlist:
             watchlist_badge = f'<span class="watchlist-badge">⚠ WATCHLIST: {", ".join(watchlist)}</span>'

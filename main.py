@@ -25,7 +25,7 @@ def setup_logging(log_path: str):
         handlers=[
             logging.FileHandler(log_path),
             logging.StreamHandler(sys.stdout),
-        ]
+        ],
     )
 
 
@@ -46,11 +46,17 @@ def main():
     subparsers = parser.add_subparsers(dest="command")
 
     # monitor command
-    subparsers.add_parser("monitor", help="Start monitoring configured Telegram channels")
+    subparsers.add_parser(
+        "monitor", help="Start monitoring configured Telegram channels"
+    )
 
     # report command
-    rp = subparsers.add_parser("report", help="Generate HTML threat report from logged data")
-    rp.add_argument("--output", default=config.REPORT_PATH, help="Output HTML file path")
+    rp = subparsers.add_parser(
+        "report", help="Generate HTML threat report from logged data"
+    )
+    rp.add_argument(
+        "--output", default=config.REPORT_PATH, help="Output HTML file path"
+    )
 
     # stats command
     subparsers.add_parser("stats", help="Print summary statistics from the database")

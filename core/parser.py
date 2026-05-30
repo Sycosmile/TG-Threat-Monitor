@@ -17,9 +17,7 @@ PATTERNS = {
     "sha256": re.compile(r"\b[a-fA-F0-9]{64}\b"),
     "cve": re.compile(r"\bCVE-\d{4}-\d{4,7}\b", re.IGNORECASE),
     "email": re.compile(r"\b[a-zA-Z0-9._%+\-]+@[a-zA-Z0-9.\-]+\.[a-zA-Z]{2,}\b"),
-    "url": re.compile(
-        r"https?://[^\s\"\'<>]+"
-    ),
+    "url": re.compile(r"https?://[^\s\"\'<>]+"),
     "domain": re.compile(
         r"\b(?:[a-zA-Z0-9\-]+\.)+(?:com|net|org|io|xyz|ru|cn|tk|top|info|biz|cc|pw|su)\b"
     ),
@@ -27,12 +25,31 @@ PATTERNS = {
 
 # Severity heuristics
 HIGH_RISK_KEYWORDS = [
-    "ransomware", "0day", "zero-day", "rce", "remote code execution",
-    "critical", "exploit", "leaked", "breach", "dump", "shell", "backdoor"
+    "ransomware",
+    "0day",
+    "zero-day",
+    "rce",
+    "remote code execution",
+    "critical",
+    "exploit",
+    "leaked",
+    "breach",
+    "dump",
+    "shell",
+    "backdoor",
 ]
 MEDIUM_RISK_KEYWORDS = [
-    "malware", "phishing", "trojan", "stealer", "botnet", "dropper",
-    "c2", "c&c", "vulnerability", "cve", "credential"
+    "malware",
+    "phishing",
+    "trojan",
+    "stealer",
+    "botnet",
+    "dropper",
+    "c2",
+    "c&c",
+    "vulnerability",
+    "cve",
+    "credential",
 ]
 
 
@@ -110,7 +127,9 @@ def check_watchlist(text: str, watchlist: list) -> List[str]:
     return hits
 
 
-def parse_message(channel: str, msg_id: int, timestamp: str, text: str, cfg) -> ParsedMessage:
+def parse_message(
+    channel: str, msg_id: int, timestamp: str, text: str, cfg
+) -> ParsedMessage:
     """Full pipeline: extract IOCs, assess severity, check watchlist."""
     iocs = extract_iocs(text, cfg)
     severity = assess_severity(text)

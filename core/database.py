@@ -45,18 +45,21 @@ def save_threat(db_path: str, parsed):
     """Save a parsed message to the database."""
     conn = sqlite3.connect(db_path)
     c = conn.cursor()
-    c.execute("""
+    c.execute(
+        """
         INSERT INTO threats (channel, message_id, timestamp, severity, iocs, watchlist, raw_text)
         VALUES (?, ?, ?, ?, ?, ?, ?)
-    """, (
-        parsed.channel,
-        parsed.message_id,
-        parsed.timestamp,
-        parsed.severity,
-        json.dumps(parsed.iocs),
-        json.dumps(parsed.watchlist_hits),
-        parsed.raw_text[:2000],  # Cap raw text storage
-    ))
+    """,
+        (
+            parsed.channel,
+            parsed.message_id,
+            parsed.timestamp,
+            parsed.severity,
+            json.dumps(parsed.iocs),
+            json.dumps(parsed.watchlist_hits),
+            parsed.raw_text[:2000],  # Cap raw text storage
+        ),
+    )
     conn.commit()
     conn.close()
 
@@ -65,10 +68,13 @@ def save_vt_result(db_path: str, ioc: str, ioc_type: str, result: dict):
     """Save a VirusTotal lookup result."""
     conn = sqlite3.connect(db_path)
     c = conn.cursor()
-    c.execute("""
+    c.execute(
+        """
         INSERT INTO vt_results (ioc, ioc_type, result)
         VALUES (?, ?, ?)
-    """, (ioc, ioc_type, json.dumps(result)))
+    """,
+        (ioc, ioc_type, json.dumps(result)),
+    )
     conn.commit()
     conn.close()
 
@@ -81,7 +87,7 @@ def fetch_all(db_path: str, severity_filter: str = None, limit: int = 500) -> li
     if severity_filter:
         c.execute(
             "SELECT * FROM threats WHERE severity=? ORDER BY logged_at DESC LIMIT ?",
-            (severity_filter, limit)
+            (severity_filter, limit),
         )
     else:
         c.execute("SELECT * FROM threats ORDER BY logged_at DESC LIMIT ?", (limit,))

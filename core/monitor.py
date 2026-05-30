@@ -49,14 +49,14 @@ async def start(cfg):
         except Exception:
             channel = "unknown"
 
-        timestamp = msg.date.strftime("%Y-%m-%d %H:%M:%S") if msg.date else str(datetime.utcnow())
+        timestamp = (
+            msg.date.strftime("%Y-%m-%d %H:%M:%S")
+            if msg.date
+            else str(datetime.utcnow())
+        )
 
         parsed = parse_message(
-            channel=channel,
-            msg_id=msg.id,
-            timestamp=timestamp,
-            text=text,
-            cfg=cfg
+            channel=channel, msg_id=msg.id, timestamp=timestamp, text=text, cfg=cfg
         )
 
         # Only log messages with IOCs or watchlist hits
@@ -71,7 +71,9 @@ async def start(cfg):
         color = sev_color.get(parsed.severity, "")
         print(f"\n{color}[{parsed.severity}]{reset} @{channel} | {timestamp}")
         for ioc_type, vals in parsed.iocs.items():
-            print(f"  {ioc_type.upper()}: {', '.join(vals[:3])}{'...' if len(vals) > 3 else ''}")
+            print(
+                f"  {ioc_type.upper()}: {', '.join(vals[:3])}{'...' if len(vals) > 3 else ''}"
+            )
         if parsed.watchlist_hits:
             print(f"  \033[91m[WATCHLIST HIT]\033[0m {parsed.watchlist_hits}")
 
@@ -83,7 +85,9 @@ async def start(cfg):
                     if result:
                         save_vt_result(cfg.DB_PATH, ioc_val, ioc_type, result)
                         if vt.is_malicious(result):
-                            print(f"  \033[91m[VT MALICIOUS]\033[0m {ioc_val} — {result.get('malicious')} engines")
+                            print(
+                                f"  \033[91m[VT MALICIOUS]\033[0m {ioc_val} — {result.get('malicious')} engines"
+                            )
 
     logger.info("[*] Listening for new messages. Press Ctrl+C to stop.")
     await client.run_until_disconnected()

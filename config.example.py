@@ -4,8 +4,8 @@
 #  DO NOT commit config.py to GitHub
 # ─────────────────────────────────────────────
 
-API_ID = ""        # From https://my.telegram.org
-API_HASH = ""      # From https://my.telegram.org
+API_ID = ""  # From https://my.telegram.org
+API_HASH = ""  # From https://my.telegram.org
 SESSION_NAME = "threat_monitor"
 
 TARGET_CHANNELS = [
@@ -14,7 +14,7 @@ TARGET_CHANNELS = [
     "vxunderground",
 ]
 
-VT_API_KEY = ""    # Optional — https://virustotal.com
+VT_API_KEY = ""  # Optional — https://virustotal.com
 
 WATCHLIST = [
     # "yourdomain.com",
