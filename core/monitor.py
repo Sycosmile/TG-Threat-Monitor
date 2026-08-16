@@ -3,6 +3,7 @@
 #  Author: Sycosmile (https://github.com/Sycosmile)
 # ─────────────────────────────────────────────
 
+import asyncio
 import logging
 from datetime import datetime
 from telethon import TelegramClient, events
@@ -50,9 +51,7 @@ async def start(cfg):
             channel = "unknown"
 
         timestamp = (
-            msg.date.strftime("%Y-%m-%d %H:%M:%S")
-            if msg.date
-            else str(datetime.utcnow())
+            msg.date.strftime("%Y-%m-%d %H:%M:%S") if msg.date else str(datetime.utcnow())
         )
 
         parsed = parse_message(
@@ -72,21 +71,27 @@ async def start(cfg):
         print(f"\n{color}[{parsed.severity}]{reset} @{channel} | {timestamp}")
         for ioc_type, vals in parsed.iocs.items():
             print(
-                f"  {ioc_type.upper()}: {', '.join(vals[:3])}{'...' if len(vals) > 3 else ''}"
+                f"  {ioc_type.upper()}: {', '.join(vals[:3])}"
+                f"{'...' if len(vals) > 3 else ''}"
             )
         if parsed.watchlist_hits:
             print(f"  \033[91m[WATCHLIST HIT]\033[0m {parsed.watchlist_hits}")
 
-        # Optional VirusTotal enrichment
+        # Optional VirusTotal enrichment (run in thread to avoid blocking)
         if cfg.VT_API_KEY:
             for ioc_type in ("sha256", "md5", "ipv4", "domain"):
                 for ioc_val in parsed.iocs.get(ioc_type, [])[:2]:  # Max 2 per type
-                    result = vt.lookup(ioc_val, ioc_type, cfg.VT_API_KEY)
+                    # Run the blocking VT lookup in a thread so the event loop
+                    # is not blocked by network I/O.
+                    result = await asyncio.to_thread(
+                        vt.lookup, ioc_val, ioc_type, cfg.VT_API_KEY, 3
+                    )
                     if result:
                         save_vt_result(cfg.DB_PATH, ioc_val, ioc_type, result)
                         if vt.is_malicious(result):
                             print(
-                                f"  \033[91m[VT MALICIOUS]\033[0m {ioc_val} — {result.get('malicious')} engines"
+                                f"  \033[91m[VT MALICIOUS]\033[0m {ioc_val} "
+                                f"— {result.get('malicious')} engines"
                             )
 
     logger.info("[*] Listening for new messages. Press Ctrl+C to stop.")
