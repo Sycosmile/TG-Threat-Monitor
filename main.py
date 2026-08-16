@@ -31,18 +31,20 @@ def setup_logging(log_path: str):
 
 def banner():
     print("""
-╔══════════════════════════════════════════════╗
-║   TG Threat Intel Monitor  v1.0              ║
-║   Author : Sycosmile                         ║
-║   Use for authorized research only           ║
-╚══════════════════════════════════════════════╝
-""")
+ ╔══════════════════════════════════════════════╗
+ ║   TG Threat Intel Monitor  v1.0              ║
+ ║   Author : Sycosmile                         ║
+ ║   Use for authorized research only           ║
+ ╚══════════════════════════════════════════════╝
+ """)
 
 
 def main():
     banner()
 
-    parser = argparse.ArgumentParser(description="Telegram Threat Intelligence Monitor")
+    parser = argparse.ArgumentParser(
+        description="Telegram Threat Intelligence Monitor",
+    )
     subparsers = parser.add_subparsers(dest="command")
 
     # monitor command
@@ -55,7 +57,9 @@ def main():
         "report", help="Generate HTML threat report from logged data"
     )
     rp.add_argument(
-        "--output", default=config.REPORT_PATH, help="Output HTML file path"
+        "--output",
+        default=config.REPORT_PATH,
+        help="Output HTML file path",
     )
 
     # stats command
