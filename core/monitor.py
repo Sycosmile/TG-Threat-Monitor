@@ -51,7 +51,9 @@ async def start(cfg):
             channel = "unknown"
 
         timestamp = (
-            msg.date.strftime("%Y-%m-%d %H:%M:%S") if msg.date else str(datetime.utcnow())
+            msg.date.strftime("%Y-%m-%d %H:%M:%S")
+            if msg.date
+            else str(datetime.utcnow())
         )
 
         parsed = parse_message(
