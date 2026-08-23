@@ -6,6 +6,7 @@ config.py
 # Data & output
 data/
 output/
+report.html
 
 # Python
 __pycache__/
