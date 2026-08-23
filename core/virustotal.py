@@ -2,9 +2,10 @@
 #  TG Threat Intel Monitor — VirusTotal Lookup (async)
 #  Author: Sycosmile (https://github.com/Sycosmile)
 # ─────────────────────────────────────────────
+"""Async VirusTotal IOC lookup helper with retry/backoff handling."""
 
 import asyncio
-from typing import Dict, Any, Optional
+from typing import Dict, Any
 import httpx
 
 VT_BASE = "https://www.virustotal.com/api/v3"
@@ -21,13 +22,15 @@ TYPE_ENDPOINTS = {
 
 
 def vt_headers(key: str) -> Dict[str, str]:
+    """Build the standard VirusTotal API request headers."""
     return {"x-apikey": key, "Accept": "application/json"}
 
 
 async def _safe_json(resp: httpx.Response) -> Dict[str, Any]:
+    """Parse a response body as JSON, returning {} on malformed data."""
     try:
         return resp.json()
-    except Exception:
+    except ValueError:
         return {}
 
 
@@ -63,7 +66,7 @@ async def lookup(
                     resp = await client.post(
                         post_url, data={"url": ioc}, headers=headers
                     )
-                    if resp.status_code == 200 or resp.status_code == 201:
+                    if resp.status_code in (200, 201):
                         data = await _safe_json(resp)
                         vid = (data or {}).get("data", {}).get("id")
                         if not vid:

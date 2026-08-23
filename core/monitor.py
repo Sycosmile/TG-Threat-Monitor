@@ -3,7 +3,6 @@
 #  Author: Sycosmile (https://github.com/Sycosmile)
 # ─────────────────────────────────────────────
 
-import asyncio
 import logging
 from datetime import datetime
 from telethon import TelegramClient, events
@@ -21,9 +20,9 @@ async def join_channels(client: TelegramClient, channels: list):
     for ch in channels:
         try:
             await client(JoinChannelRequest(ch))
-            logger.info(f"[+] Joined: {ch}")
+            logger.info("[+] Joined: %s", ch)
         except Exception as e:
-            logger.warning(f"[!] Could not join {ch}: {e}")
+            logger.warning("[!] Could not join %s: %s", ch, e)
 
 
 async def start(cfg):

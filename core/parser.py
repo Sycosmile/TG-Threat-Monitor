@@ -19,7 +19,8 @@ PATTERNS = {
     "email": re.compile(r"\b[a-zA-Z0-9._%+\-]+@[a-zA-Z0-9.\-]+\.[a-zA-Z]{2,}\b"),
     "url": re.compile(r"https?://[^\s\"\'<>]+"),
     "domain": re.compile(
-        r"\b(?:[a-zA-Z0-9\-]+\.)+(?:com|net|org|io|xyz|ru|cn|tk|top|info|biz|cc|pw|su)\b"
+        r"\b(?:[a-zA-Z0-9\-]+\.)+"
+        r"(?:com|net|org|io|xyz|ru|cn|tk|top|info|biz|cc|pw|su)\b"
     ),
 }
 
@@ -55,6 +56,8 @@ MEDIUM_RISK_KEYWORDS = [
 
 @dataclass
 class ParsedMessage:
+    """A single parsed Telegram message with extracted IOCs and metadata."""
+
     channel: str
     message_id: int
     timestamp: str

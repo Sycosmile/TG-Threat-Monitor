@@ -1,0 +1,20 @@
+[MESSAGES CONTROL]
+# These are complexity/style thresholds, not correctness issues.
+# Disabled because the flagged functions (VT lookup retry logic, HTML
+# report generation) are intentionally comprehensive rather than
+# poorly structured — splitting them further would hurt readability
+# more than it helps.
+#
+# broad-exception-caught is also disabled: the monitor loop catches
+# broad Exception deliberately in its Telegram event handler so one
+# malformed message or transient API error doesn't crash the whole
+# long-running daemon.
+disable=
+    too-many-locals,
+    too-many-arguments,
+    too-many-positional-arguments,
+    too-many-branches,
+    too-many-return-statements,
+    missing-module-docstring,
+    missing-function-docstring,
+    broad-exception-caught

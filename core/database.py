@@ -47,7 +47,9 @@ def save_threat(db_path: str, parsed):
     c = conn.cursor()
     c.execute(
         """
-        INSERT INTO threats (channel, message_id, timestamp, severity, iocs, watchlist, raw_text)
+        INSERT INTO threats
+            (channel, message_id, timestamp, severity,
+             iocs, watchlist, raw_text)
         VALUES (?, ?, ?, ?, ?, ?, ?)
     """,
         (
