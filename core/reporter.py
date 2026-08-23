@@ -26,8 +26,12 @@ def generate(db_path: str, output_path: str):
         watchlist = json.loads(r.get("watchlist") or "[]")
         ioc_lines = ""
         for ioc_type, vals in iocs.items():
-            ioc_lines += f'<span class="tag">{html_lib.escape(ioc_type.upper())}</span> '
-            ioc_lines += ", ".join(f"<code>{html_lib.escape(str(v))}</code>" for v in vals[:4])
+            ioc_lines += (
+                f'<span class="tag">{html_lib.escape(ioc_type.upper())}</span> '
+            )
+            ioc_lines += ", ".join(
+                f"<code>{html_lib.escape(str(v))}</code>" for v in vals[:4]
+            )
             if len(vals) > 4:
                 ioc_lines += f" <em>+{len(vals)-4} more</em>"
             ioc_lines += "<br>"
@@ -49,7 +53,7 @@ def generate(db_path: str, output_path: str):
 
         rows_html += (
             "        <tr>\n"
-            f"          <td><span class=\"sev {sev_class}\">{html_lib.escape(sev)}</span></td>\n"
+            f'          <td><span class="sev {sev_class}">{html_lib.escape(sev)}</span></td>\n'
             f"          <td>@{html_lib.escape(str(r.get('channel', '')))}</td>\n"
             f"          <td>{html_lib.escape(str(r.get('timestamp', '')))}</td>\n"
             f"          <td>{ioc_lines}{watchlist_badge}</td>\n"

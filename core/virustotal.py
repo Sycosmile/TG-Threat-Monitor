@@ -60,7 +60,9 @@ async def lookup(
                 # URL handling requires a POST to create the resource, then GET by id
                 if ioc_type == "url":
                     post_url = f"{VT_BASE}/urls"
-                    resp = await client.post(post_url, data={"url": ioc}, headers=headers)
+                    resp = await client.post(
+                        post_url, data={"url": ioc}, headers=headers
+                    )
                     if resp.status_code == 200 or resp.status_code == 201:
                         data = await _safe_json(resp)
                         vid = (data or {}).get("data", {}).get("id")
