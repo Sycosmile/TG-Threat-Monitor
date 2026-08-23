@@ -22,8 +22,8 @@ Built by **Sycosmile** (https://github.com/Sycosmile) as part of a cybersecurity
 
 ### 1. Clone the repo
 ```bash
-git clone https://github.com/David1798-tech/tg-threat-monitor.git
-cd tg-threat-monitor
+git clone https://github.com/Sycosmile/TG-Threat-Monitor.git
+cd TG-Threat-Monitor
 ```
 
 ### 2. Install dependencies
@@ -105,11 +105,6 @@ This repository includes a GitHub Actions workflow that runs formatting and lint
 
 See `CONTRIBUTING.md` for contribution guidelines and local lint/format commands.
 
-## License
-
-This project is licensed under the MIT License — see the `LICENSE` file for details.
-
-
 ## Disclaimer
 
 This tool is intended for **authorized security research and threat intelligence purposes only**. Only monitor public channels. Do not use against private accounts or groups without authorization. The author assumes no liability for misuse.
@@ -118,4 +113,4 @@ This tool is intended for **authorized security research and threat intelligence
 
 ## License
 
-MIT License
+MIT License — see the `LICENSE` file for details.

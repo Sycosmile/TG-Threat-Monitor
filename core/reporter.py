@@ -5,6 +5,7 @@
 
 import json
 import os
+import html as html_lib
 from datetime import datetime
 from core.database import fetch_all, fetch_stats
 
@@ -25,8 +26,8 @@ def generate(db_path: str, output_path: str):
         watchlist = json.loads(r.get("watchlist") or "[]")
         ioc_lines = ""
         for ioc_type, vals in iocs.items():
-            ioc_lines += f'<span class="tag">{ioc_type.upper()}</span> '
-            ioc_lines += ", ".join(f"<code>{v}</code>" for v in vals[:4])
+            ioc_lines += f'<span class="tag">{html_lib.escape(ioc_type.upper())}</span> '
+            ioc_lines += ", ".join(f"<code>{html_lib.escape(str(v))}</code>" for v in vals[:4])
             if len(vals) > 4:
                 ioc_lines += f" <em>+{len(vals)-4} more</em>"
             ioc_lines += "<br>"
@@ -41,18 +42,18 @@ def generate(db_path: str, output_path: str):
         watchlist_badge = ""
         if watchlist:
             # keep this line under 79 chars
-            wl_text = ", ".join(watchlist)
+            wl_text = ", ".join(html_lib.escape(str(w)) for w in watchlist)
             watchlist_badge = (
                 f'<span class="watchlist-badge">⚠ WATCHLIST: {wl_text}</span>'
             )
 
         rows_html += (
             "        <tr>\n"
-            f"          <td><span class=\"sev {sev_class}\">{sev}</span></td>\n"
-            f"          <td>@{r.get('channel', '')}</td>\n"
-            f"          <td>{r.get('timestamp', '')}</td>\n"
+            f"          <td><span class=\"sev {sev_class}\">{html_lib.escape(sev)}</span></td>\n"
+            f"          <td>@{html_lib.escape(str(r.get('channel', '')))}</td>\n"
+            f"          <td>{html_lib.escape(str(r.get('timestamp', '')))}</td>\n"
             f"          <td>{ioc_lines}{watchlist_badge}</td>\n"
-            f"          <td class=\"raw-text\">{r.get('raw_text', '')[:200]}...</td>\n"
+            f"          <td class=\"raw-text\">{html_lib.escape(str(r.get('raw_text', ''))[:200])}...</td>\n"
             "        </tr>"
         )
 
@@ -63,7 +64,7 @@ def generate(db_path: str, output_path: str):
         if rows_html
         else (
             '<tr><td colspan="5" style="text-align:center;'
-            'color:#a0aec0;padding:2rem;'>No threats logged yet.'
+            'color:#a0aec0;padding:2rem;">No threats logged yet.'
             "</td></tr>"
         )
     )

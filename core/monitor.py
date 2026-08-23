@@ -83,10 +83,13 @@ async def start(cfg):
         if cfg.VT_API_KEY:
             for ioc_type in ("sha256", "md5", "ipv4", "domain"):
                 for ioc_val in parsed.iocs.get(ioc_type, [])[:2]:  # Max 2 per type
-                    # Run the blocking VT lookup in a thread so the event loop
-                    # is not blocked by network I/O.
-                    result = await asyncio.to_thread(
-                        vt.lookup, ioc_val, ioc_type, cfg.VT_API_KEY, 3
+                    # vt.lookup is already async (uses httpx.AsyncClient
+                    # internally) — await it directly rather than via
+                    # asyncio.to_thread, which is only for blocking sync
+                    # functions and would otherwise return an unawaited
+                    # coroutine here.
+                    result = await vt.lookup(
+                        ioc_val, ioc_type, cfg.VT_API_KEY, max_retries=3
                     )
                     if result:
                         save_vt_result(cfg.DB_PATH, ioc_val, ioc_type, result)
